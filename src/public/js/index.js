@@ -136,7 +136,8 @@ function sendTransaction(isAdding) {
   })
   .catch(err => {
     // fetch failed, so save in indexed db
-    saveRecord(transaction);
+    // saveRecord(transaction);
+    saveRecordLocal(transaction);
 
     // clear form
     nameEl.value = "";
@@ -151,3 +152,12 @@ document.querySelector("#add-btn").onclick = function() {
 document.querySelector("#sub-btn").onclick = function() {
   sendTransaction(false);
 };
+
+function saveRecordLocal(record) {
+  const transaction = db.transaction(['monetaryTransaction'], 'readwrite');
+
+  const transactionObjectStore = transaction.objectStore('monetaryTransaction');
+
+  // add record to your store with add method.
+  transactionObjectStore.add(record);
+}
